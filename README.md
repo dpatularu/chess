@@ -27,7 +27,8 @@ match board.make_move(&user_move) {
         GameStatus::Draw => {}
         GameStatus::Ongoing => {}
     },
-}```
+}
+```
 
 4. Check the status of your game with the game_status method
 ```rust
@@ -35,7 +36,8 @@ match board.game_status() {
     GameStatus::Ongoing => {}
     GameStatus::Checkmate(winner) => {}
     GameStatus::Draw => {}
-}```
+}
+```
 
 5. Transform your board back into a FEN string with to_fen
 ```rust
