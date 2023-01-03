@@ -1,3 +1,4 @@
+#[derive(Clone, Copy, PartialEq)]
 pub struct Piece {
     pub kind: PieceKind,
     pub color: Color,
@@ -23,7 +24,7 @@ impl Color {
         }
     }
 }
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum PieceKind {
     King,
     Queen,
@@ -33,6 +34,7 @@ pub enum PieceKind {
     Pawn,
 }
 
+#[derive(Clone, Copy)]
 pub struct CastleRights {
     pub white_queen_side: bool,
     pub white_king_side: bool,
@@ -62,42 +64,69 @@ impl CastleRights {
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub struct PieceMove {
+#[derive(PartialEq, Clone, Copy)]
+pub struct UserMove {
+    pub origin: (usize, usize),
+    pub destination: (usize, usize),
+    pub promotion_request: Option<PieceKind>,
+}
+
+#[derive(Debug)]
+pub struct ValidMove {
     pub origin: (usize, usize),
     pub destination: (usize, usize),
 }
 
-#[derive(Debug)]
 pub struct Move {
-    pub piece_move: PieceMove,
-    pub side_effect: Option<SideEffect>,
+    pub piece_move: UserMove,
+    pub side_effects: Vec<SideEffect>,
 }
 
 impl Move {
     pub fn new(
         origin: (usize, usize),
         destination: (usize, usize),
-        side_effect: Option<SideEffect>,
+        side_effects: Vec<SideEffect>,
     ) -> Self {
         Move {
-            piece_move: PieceMove {
+            piece_move: UserMove {
                 origin,
                 destination,
+                promotion_request: None,
             },
-            side_effect,
+            side_effects,
         }
     }
 }
 
 pub enum MoveOutcome {
-    InvalidMove,
+    InvalidMove(String),
+    GameIsOver(GameStatus),
     Success,
 }
 
 #[derive(Debug)]
+pub enum GameStatus {
+    Ongoing,
+    Checkmate(Color),
+    Draw,
+}
+#[derive(Clone, Copy, PartialEq)]
 pub enum SideEffect {
     EnPassantTake((usize, usize)),
-    EnPassantMove((usize, usize)),
-    Castle(Color),
+    PawnMove,
+    PieceTaken(Piece),
+    DoublePawnMove((usize, usize)),
+    Castle((usize, usize), (usize, usize), Color),
+    KingMove(Color),
+    InitialRookMove(RookType),
+    Promotion,
+}
+
+#[derive(Clone, Copy, PartialEq)]
+pub enum RookType {
+    WhiteKingSide,
+    WhiteQueenSide,
+    BlackKingSide,
+    BlackQueenSide,
 }
