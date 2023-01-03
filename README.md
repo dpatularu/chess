@@ -18,12 +18,13 @@ let user_move = UserMove::new((1, 0), (3, 0), None);
 
 3. Invoke the make_move method on your board object and pass in your UserMove struct. It will return a MoveOutcome variant.
 ```rust
-            match board.make_move(&user_move) {
-                MoveOutcome::InvalidMove(err) => {}
-                MoveOutcome::Success => {}
-                MoveOutcome::GameIsOver(status) => match status {
-                    GameStatus::Checkmate(winner) => {}
-                    GameStatus::Draw => {}
-                    GameStatus::Ongoing => {}
-                },
-            }```
+match board.make_move(&user_move) {
+    MoveOutcome::InvalidMove(err) => {}
+    MoveOutcome::Success => {}
+    MoveOutcome::GameIsOver(status) => 
+    match status {
+        GameStatus::Checkmate(winner) => {}
+        GameStatus::Draw => {}
+        GameStatus::Ongoing => {}
+    },
+}```
