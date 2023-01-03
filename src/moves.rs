@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::{get_attacked_squares, models::*, Board};
+use crate::{helpers::*, models::*, Board};
 
 pub fn pawn_attacking_moves(board: &Board, color: &Color, origin: (usize, usize)) -> Vec<Move> {
     let offset: isize = match color {

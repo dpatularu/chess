@@ -1,3 +1,5 @@
+use crate::UserMove;
+
 #[derive(Clone, Copy, PartialEq)]
 pub struct Piece {
     pub kind: PieceKind,
@@ -64,13 +66,6 @@ impl CastleRights {
     }
 }
 
-#[derive(PartialEq, Clone, Copy)]
-pub struct UserMove {
-    pub origin: (usize, usize),
-    pub destination: (usize, usize),
-    pub promotion_request: Option<PieceKind>,
-}
-
 #[derive(Debug)]
 pub struct ValidMove {
     pub origin: (usize, usize),
@@ -99,18 +94,6 @@ impl Move {
     }
 }
 
-pub enum MoveOutcome {
-    InvalidMove(String),
-    GameIsOver(GameStatus),
-    Success,
-}
-
-#[derive(Debug)]
-pub enum GameStatus {
-    Ongoing,
-    Checkmate(Color),
-    Draw,
-}
 #[derive(Clone, Copy, PartialEq)]
 pub enum SideEffect {
     EnPassantTake((usize, usize)),

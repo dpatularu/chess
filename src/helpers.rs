@@ -1,6 +1,4 @@
-use crate::models::*;
-use crate::moves;
-use crate::Board;
+use crate::{models::*, moves, Board, MoveOutcome, UserMove};
 use std::collections::HashSet;
 
 pub fn get_attacked_squares(board: &Board, player_turn: Color) -> HashSet<(usize, usize)> {

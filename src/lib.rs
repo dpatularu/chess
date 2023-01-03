@@ -1,11 +1,11 @@
-pub mod chess_frontend;
-pub mod helpers;
-pub mod models;
-pub mod moves;
+mod helpers;
+mod models;
+mod moves;
 
 use helpers::*;
 use models::*;
 #[derive(Copy, Clone)]
+
 pub struct Board {
     pub board: [[Option<Piece>; 8]; 8],
     pub player_turn: Color,
@@ -136,8 +136,8 @@ impl Board {
             Ok(mut m) => {
                 m.piece_move = *piece_move;
                 match Self::handle_move(self, &m) {
-                    MoveOutcome::InvalidMove(e) => return models::MoveOutcome::InvalidMove(e),
-                    MoveOutcome::GameIsOver(e) => return models::MoveOutcome::GameIsOver(e),
+                    MoveOutcome::InvalidMove(e) => return MoveOutcome::InvalidMove(e),
+                    MoveOutcome::GameIsOver(e) => return MoveOutcome::GameIsOver(e),
                     MoveOutcome::Success => {
                         if self.player_turn == Color::Black {
                             self.num_moves += 1;
@@ -295,6 +295,39 @@ impl Board {
             let piece = Piece::new(p.kind, p.color);
             self.board[destination_row][destination_column] = Some(piece);
             self.board[origin_row][origin_column] = None;
+        }
+    }
+}
+
+pub enum MoveOutcome {
+    InvalidMove(String),
+    GameIsOver(GameStatus),
+    Success,
+}
+
+pub enum GameStatus {
+    Ongoing,
+    Checkmate(Color),
+    Draw,
+}
+
+#[derive(PartialEq, Clone, Copy)]
+pub struct UserMove {
+    pub origin: (usize, usize),
+    pub destination: (usize, usize),
+    pub promotion_request: Option<PieceKind>,
+}
+
+impl UserMove {
+    pub fn new(
+        origin: (usize, usize),
+        destination: (usize, usize),
+        promotion_request: Option<PieceKind>,
+    ) -> Self {
+        UserMove {
+            origin,
+            destination,
+            promotion_request,
         }
     }
 }
