@@ -10,3 +10,20 @@ This is a simple chess engine with all the rules implemented.
     let fen = "rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR w KQkq - 0 1";
     let mut board = Board::from_fen(fen);
 ```
+
+2. Create a UserMove struct by providing the origin square coordinates, destination square coordinates and an Optional promotion request (necessary for pawn promotions).
+```rust
+let user_move = UserMove::new((1, 0), (3, 0), None);
+```
+
+3. Invoke the make_move method on your board object and pass in your UserMove struct. It will return a MoveOutcome variant.
+```rust
+            match board.make_move(&user_move) {
+                MoveOutcome::InvalidMove(err) => {}
+                MoveOutcome::Success => {}
+                MoveOutcome::GameIsOver(status) => match status {
+                    GameStatus::Checkmate(winner) => {}
+                    GameStatus::Draw => {}
+                    GameStatus::Ongoing => {}
+                },
+            }```
