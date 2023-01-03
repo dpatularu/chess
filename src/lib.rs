@@ -3,18 +3,16 @@ pub mod helpers;
 pub mod models;
 pub mod moves;
 
-use std::collections::HashMap;
-
 use helpers::*;
 use models::*;
 #[derive(Copy, Clone)]
 pub struct Board {
-    board: [[Option<Piece>; 8]; 8],
-    player_turn: Color,
-    castle_rights: CastleRights,
-    en_passant_square: Option<(usize, usize)>,
-    num_half_moves: usize,
-    num_moves: usize,
+    pub board: [[Option<Piece>; 8]; 8],
+    pub player_turn: Color,
+    pub castle_rights: CastleRights,
+    pub en_passant_square: Option<(usize, usize)>,
+    pub num_half_moves: usize,
+    pub num_moves: usize,
 }
 
 impl Board {

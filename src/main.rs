@@ -3,11 +3,10 @@ use chess::models::{GameStatus, MoveOutcome};
 use chess::Board;
 
 fn main() {
-    let fen = "k6K/3P4/8/8/8/8/6rp/8 b KQkq - 0 1";
+    let fen = "rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR w KQkq - 0 1";
     let mut board = Board::from_fen(fen);
 
     loop {
-        chess_frontend::print(&board);
         match board.game_status() {
             GameStatus::Ongoing => {
                 let user_move = chess_frontend::get_user_move();
