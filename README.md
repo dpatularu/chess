@@ -25,8 +25,7 @@ match board.make_move(&user_move) {
         MoveError::InvalidMove(UserMove) => {}
     },
     MoveOutcome::Success => {}
-    MoveOutcome::GameIsOver(status) => 
-    match status {
+    MoveOutcome::GameIsOver(status) => match status {
         GameStatus::Checkmate(winner) => {}
         GameStatus::Draw => {}
         GameStatus::Ongoing => {}
