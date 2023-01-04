@@ -3,7 +3,7 @@
 
 This is a simple chess engine with all the rules implemented. 
 
-## How it works
+## Usage
 
 1. Instantiate a Board object with a FEN string.
 ```rust
