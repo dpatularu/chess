@@ -48,9 +48,9 @@ pub fn get_move_from_vec(move_vec: Vec<Move>, move_struct: &UserMove) -> Result<
             return Ok(m);
         }
     }
-    Err(MoveOutcome::InvalidMove(
-        format! {"{} to {} is not a valid move.", tuple_to_square(Some(move_struct.origin)).to_ascii_uppercase(), tuple_to_square(Some(move_struct.destination)).to_ascii_uppercase()},
-    ))
+    Err(MoveOutcome::Error(crate::MoveError::InvalidMove(
+        *move_struct,
+    )))
 }
 
 pub fn parse_en_passant_fen(square: &str) -> Option<(usize, usize)> {

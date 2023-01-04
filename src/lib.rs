@@ -1,6 +1,6 @@
-mod helpers;
-mod models;
-mod moves;
+pub mod helpers;
+pub mod models;
+pub mod moves;
 
 use helpers::*;
 use models::*;
@@ -136,7 +136,7 @@ impl Board {
             Ok(mut m) => {
                 m.piece_move = *piece_move;
                 match Self::handle_move(self, &m) {
-                    MoveOutcome::InvalidMove(e) => return MoveOutcome::InvalidMove(e),
+                    MoveOutcome::Error(e) => return MoveOutcome::Error(e),
                     MoveOutcome::GameIsOver(e) => return MoveOutcome::GameIsOver(e),
                     MoveOutcome::Success => {
                         if self.player_turn == Color::Black {
@@ -245,10 +245,9 @@ impl Board {
                 SideEffect::Promotion => match move_struct.piece_move.promotion_request {
                     Some(promotion_piecekind) => match promotion_piecekind {
                         PieceKind::King | PieceKind::Pawn => {
-                            return MoveOutcome::InvalidMove(format!(
-                                "Cannot promote into {:?}.",
-                                promotion_piecekind
-                            ))
+                            return MoveOutcome::Error(MoveError::InvalidPromotion(
+                                promotion_piecekind,
+                            ));
                         }
                         valid_piece => {
                             let (origin_row, origin_column) = move_struct.piece_move.origin;
@@ -262,9 +261,7 @@ impl Board {
                         }
                     },
                     None => {
-                        return MoveOutcome::InvalidMove(
-                            "Was not provided a piece to promote into.".to_owned(),
-                        );
+                        return MoveOutcome::Error(MoveError::PromotionNotGiven);
                     }
                 },
             }
@@ -300,9 +297,15 @@ impl Board {
 }
 
 pub enum MoveOutcome {
-    InvalidMove(String),
+    Error(MoveError),
     GameIsOver(GameStatus),
     Success,
+}
+
+pub enum MoveError {
+    InvalidPromotion(PieceKind),
+    PromotionNotGiven,
+    InvalidMove(UserMove),
 }
 
 pub enum GameStatus {
