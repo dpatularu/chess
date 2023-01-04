@@ -50,5 +50,5 @@ let fen: String = board.to_fen();
 
 6. The valid_moves method will give you a vector of all legal moves that can be made.
 ```rust
-    let valid_moves: Vec<ValidMove> = board.valid_moves();
+let valid_moves: Vec<ValidMove> = board.valid_moves();
 ```
