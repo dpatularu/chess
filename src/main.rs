@@ -25,4 +25,5 @@ fn main() {
         GameStatus::Draw => {}
     }
     println!("{}", board.to_fen());
+    println!("{}", Board::from_fen(fen).to_fen());
 }

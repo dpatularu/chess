@@ -99,9 +99,9 @@ pub fn square_to_tuple(square: &str) -> Result<(usize, usize), String> {
     Ok((row, column))
 }
 pub fn populate_board_from_fen(board: &mut [[Option<Piece>; 8]; 8], fen: &str) {
-    let mut row = 0;
+    let mut row = 7;
     let mut column = 0;
-    for c in fen.chars().rev() {
+    for c in fen.chars() {
         match c {
             'r' => board[row][column] = Some(Piece::new(PieceKind::Rook, Color::Black)),
             'R' => board[row][column] = Some(Piece::new(PieceKind::Rook, Color::White)),
@@ -121,7 +121,7 @@ pub fn populate_board_from_fen(board: &mut [[Option<Piece>; 8]; 8], fen: &str) {
             }
             '/' => {
                 column = 0;
-                row += 1;
+                row -= 1;
                 continue;
             }
             _ => {
@@ -134,7 +134,7 @@ pub fn populate_board_from_fen(board: &mut [[Option<Piece>; 8]; 8], fen: &str) {
 
 pub fn board_to_fen(board: [[Option<Piece>; 8]; 8]) -> String {
     let mut fen = String::new();
-    for (i, row) in board.into_iter().enumerate() {
+    for (i, row) in board.into_iter().enumerate().rev() {
         let mut num_empty_squares = 0;
         for column in row {
             match column {
@@ -168,7 +168,7 @@ pub fn board_to_fen(board: [[Option<Piece>; 8]; 8]) -> String {
         if num_empty_squares != 0 {
             fen.push(char::from_digit(num_empty_squares, 10).unwrap());
         }
-        if i != board.len() - 1 {
+        if i != 0 {
             fen.push('/');
         }
     }
